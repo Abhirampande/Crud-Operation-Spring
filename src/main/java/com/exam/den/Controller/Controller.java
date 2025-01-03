@@ -2,7 +2,6 @@ package com.exam.den.Controller;
 
 import com.exam.den.Model.Model;
 import com.exam.den.Repo.Repo;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +11,21 @@ import java.util.List;
 public class Controller {
     @Autowired
     private Repo repo;
-
+    //localhost:8060
     @GetMapping(value = "get")
-    public List<Model> getModel(){
+    public List<Model> getAllModel(){
         return repo.findAll();
+    }
+    @GetMapping(value = "/model/{Id}")
+    public Model getModel(@PathVariable Long Id){
+        Model model = repo.findById(Id).get();
+        return model;
+    }
+
+    //GET http://localhost:8080/users/older-than?age=18
+    @GetMapping(value = "/model/older-than")
+    public List<Model> getModelOlderThan(@RequestParam int age){
+        return repo.findByAgeGreaterThan(age);
     }
 
     @PostMapping(value = "save")
